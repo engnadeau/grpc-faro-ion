@@ -1,0 +1,73 @@
+import java.nio.file.Paths
+
+plugins {
+    id "com.google.protobuf" version "0.8.3"
+    id "java"
+    id "idea"
+}
+
+group 'me.nicholasnadeau'
+version '0.1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+// define gRPC version
+def GRPC_VERSION = '1.9.0'
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+
+    // https://mvnrepository.com/artifact/io.grpc/grpc-netty
+    compile group: 'io.grpc', name: 'grpc-netty', version: GRPC_VERSION
+
+    // https://mvnrepository.com/artifact/io.grpc/grpc-protobuf
+    compile group: 'io.grpc', name: 'grpc-protobuf', version: GRPC_VERSION
+
+    // https://mvnrepository.com/artifact/io.grpc/grpc-stub
+    compile group: 'io.grpc', name: 'grpc-stub', version: GRPC_VERSION
+
+    // FARO lib
+    compile fileTree(dir: 'faro-lib', include: '*.jar')
+}
+
+// compile proto
+protobuf {
+    protoc {
+        // https://mvnrepository.com/artifact/com.google.protobuf/protoc
+        artifact = 'com.google.protobuf:protoc:3.5.1-1'
+    }
+
+    //noinspection GroovyAssignabilityCheck
+    plugins {
+        grpc {
+            // https://mvnrepository.com/artifact/io.grpc/protoc-gen-grpc-java
+            artifact = "io.grpc:protoc-gen-grpc-java:$GRPC_VERSION"
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+// inform idea where the generated protos are
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+clean {
+    //noinspection GroovyAssignabilityCheck
+    delete protobuf.generatedFilesBaseDir
+}
