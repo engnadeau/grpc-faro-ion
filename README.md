@@ -1,4 +1,4 @@
-# faro-ion-service
+# FARO ION gRPC 
 
 gRPC wrapper and service for interacting with a FARO ION laser tracker
 
