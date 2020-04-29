@@ -1,0 +1,63 @@
+syntax = "proto3";
+package faroion;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option java_multiple_files = true;
+option java_package = "me.nicholasnadeau.faroion";
+option java_outer_classname = "FaroIonProto";
+
+// define service
+service FaroIonService {
+    rpc MoveCartesian (CartesianPosition) returns (google.protobuf.Empty) {
+    }
+
+    rpc MoveCartesianRel (CartesianPosition) returns (google.protobuf.Empty) {
+    }
+
+    rpc MoveSpherical (SphericalPosition) returns (google.protobuf.Empty) {
+    }
+
+    rpc MoveSphericalRel (SphericalPosition) returns (google.protobuf.Empty) {
+    }
+
+    rpc MoveHome (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+
+    rpc Search (google.protobuf.DoubleValue) returns (google.protobuf.Empty) {
+    }
+
+    rpc MeasurePoint (google.protobuf.Empty) returns (Measure) {
+    }
+
+    rpc Start (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+
+    rpc Initialize (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+
+    rpc Stop (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+
+    rpc IsTargetDetected (google.protobuf.Empty) returns (google.protobuf.BoolValue) {
+    }
+}
+
+message CartesianPosition {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+}
+
+message SphericalPosition {
+    double azimuth = 1;
+    double zenith = 2;
+    double distance = 3;
+}
+
+message Measure {
+    CartesianPosition position = 1;
+    double temperature = 2;
+    bool is_success = 3;
+}
